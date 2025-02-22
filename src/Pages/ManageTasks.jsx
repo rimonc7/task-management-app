@@ -52,7 +52,8 @@ const ManageTasks = () => {
     setValue("category", task.category);
     document.getElementById("my_modal_5").showModal();
   };
-+
+
+  
   const onSubmit = async (data) => {
     if (!selectedTask) return;
 

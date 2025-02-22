@@ -1,8 +1,35 @@
-# React + Vite
+# Task Management App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple and efficient **Task Management App** built using **React, React Query, Firebase, and TailwindCSS**. This application allows users to **create, edit, delete, and manage their tasks** with an intuitive UI.
 
-Currently, two official plugins are available:
+## 🌍 Live Demo
+🔗 [Live App](https://task-manager-dedd7.web.app/)  
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
+
+## 🚀 Features
+- 📌 **Add, Edit, Delete, and Categorize Tasks**
+- 📦 **Drag and Drop Task Sorting** (Using `@dnd-kit/sortable`)
+- 🔥 **Authentication** (Firebase)
+- 🎨 **Modern UI** (Tailwind CSS + DaisyUI)
+- 🌐 **Real-time Data Fetching** (`@tanstack/react-query`)
+
+---
+
+## 📦 Dependencies
+The project uses the following major dependencies:
+
+- **React 19** - Frontend framework
+- **React Query** - Data fetching & caching
+- **Firebase** - User authentication & backend
+- **Axios** - API calls
+- **React Hook Form** - Form validation
+- **SweetAlert2** - Beautiful alert popups
+- **Tailwind CSS** - Styling
+- **DaisyUI** - UI Components
+- **React DnD** - Drag-and-drop feature
+
+Check `package.json` for full dependencies.
+
+---
+
