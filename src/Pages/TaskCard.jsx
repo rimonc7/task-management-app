@@ -2,6 +2,7 @@ import { useDrag } from "react-dnd";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import useAxiosPublic from "../Hook/useAxiosPublic";
+import { MdDelete } from "react-icons/md";
 
 const TaskCard = ({ task }) => {
   const axiosPublic = useAxiosPublic();
@@ -50,9 +51,9 @@ const TaskCard = ({ task }) => {
       </div>
       <button
         onClick={() => deleteMutation.mutate()}
-        className="bg-red-500 text-white p-1 rounded"
+        className=" p-1 rounded"
       >
-        🗑
+       <MdDelete className="text-red-500" />
       </button>
     </div>
   );
