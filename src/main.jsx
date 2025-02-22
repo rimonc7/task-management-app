@@ -8,6 +8,7 @@ import AuthProvider from "./Provider/AuthProvider";
 import AddTask from "./Pages/AddTask";
 import ManageTasks from "./Pages/ManageTasks";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import TaskBoard from "./Pages/TaskBoard";
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
     path: "/",
     element: <Home></Home>,
     children: [
+      {
+        path: '/',
+        element: <TaskBoard></TaskBoard>
+      },
       {
         path: "/add-task",
         element: <AddTask></AddTask>,

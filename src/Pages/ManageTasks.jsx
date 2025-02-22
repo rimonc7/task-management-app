@@ -23,7 +23,7 @@ const ManageTasks = () => {
     enabled: !!user?.email,
   });
 
-  // Handle task deletion
+  // Handle task delete
   const handleDelete = async (taskId) => {
     const confirmDelete = await Swal.fire({
       title: "Are you sure?",
