@@ -1,14 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../Hook/useAxiosPublic";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../Provider/AuthProvider";
 import Swal from "sweetalert2";
+import { useForm } from "react-hook-form";
 
 const ManageTasks = () => {
   const axiosPublic = useAxiosPublic();
   const { user } = useContext(AuthContext);
+  const { register, handleSubmit, reset, setValue } = useForm();
+  const [selectedTask, setSelectedTask] = useState(null); // Store selected task for editing
 
-  // Fetch tasks for the logged-in user
   const {
     data: tasks = [],
     isLoading,
@@ -23,7 +25,7 @@ const ManageTasks = () => {
     enabled: !!user?.email,
   });
 
-  // Handle task delete
+  // Handle Delete
   const handleDelete = async (taskId) => {
     const confirmDelete = await Swal.fire({
       title: "Are you sure?",
@@ -42,12 +44,31 @@ const ManageTasks = () => {
     }
   };
 
+  // Handle Edit
+  const handleEdit = (task) => {
+    setSelectedTask(task);
+    setValue("title", task.title);
+    setValue("description", task.description);
+    setValue("category", task.category);
+    document.getElementById("my_modal_5").showModal();
+  };
++
+  const onSubmit = async (data) => {
+    if (!selectedTask) return;
+
+    await axiosPublic.put(`/tasks/${selectedTask._id}`, data);
+    Swal.fire("Updated!", "Task has been updated.", "success");
+    refetch();
+    reset();
+    document.getElementById("my_modal_5").close();
+  };
+
   return (
     <div className="p-6 lg:mx-40">
       <h2 className="text-2xl font-bold text-gray-800 mb-4">Manage Tasks</h2>
 
       {isLoading ? (
-        <p className="text-gray-600">Loading tasks...</p>
+        <p className="text-gray-600 text-center mt-5">Loading tasks...</p>
       ) : tasks.length > 0 ? (
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white shadow-md rounded-lg">
@@ -61,9 +82,14 @@ const ManageTasks = () => {
             </thead>
             <tbody>
               {tasks.map((task, index) => (
-                <tr key={task._id} className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}>
+                <tr
+                  key={task._id}
+                  className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}
+                >
                   <td className="py-3 px-6">{task.title}</td>
-                  <td className="py-3 px-6">{task.description || "No description"}</td>
+                  <td className="py-3 px-6">
+                    {task.description || "No description"}
+                  </td>
                   <td className="py-3 px-6 text-center">{task.category}</td>
                   <td className="py-3 px-6 text-center">
                     <button
@@ -72,6 +98,12 @@ const ManageTasks = () => {
                     >
                       Delete
                     </button>
+                    <button
+                      onClick={() => handleEdit(task)}
+                      className="bg-blue-500 text-white px-4 mx-1 py-2 rounded-lg shadow-md hover:bg-blue-600 transition"
+                    >
+                      Edit
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -79,8 +111,63 @@ const ManageTasks = () => {
           </table>
         </div>
       ) : (
-        <p className="text-gray-600">No tasks found for {user?.email}</p>
+        <p className="text-gray-600 text-center mt-5">No tasks found yet</p>
       )}
+
+      {/* Modal Component */}
+      <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Edit Task</h3>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            <div>
+              <label className="block text-lg font-semibold text-gray-700 mb-1">
+                Title
+              </label>
+              <input
+                type="text"
+                {...register("title", { required: true })}
+                placeholder="Enter task title"
+                className="w-full px-4 py-3 border rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              />
+            </div>
+            <div>
+              <label className="block text-lg font-semibold text-gray-700 mb-1">
+                Description
+              </label>
+              <textarea
+                {...register("description")}
+                placeholder="Enter task description (optional)"
+                className="w-full px-4 py-3 border rounded-xl shadow-sm h-28 resize-none focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              />
+            </div>
+            <div>
+              <label className="block text-lg font-semibold text-gray-700 mb-1">
+                Category
+              </label>
+              <select
+                {...register("category")}
+                className="w-full px-4 py-3 border rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              >
+                <option value="To-Do">To-Do</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Done">Done</option>
+              </select>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full py-3 text-white bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 font-bold rounded-xl shadow-lg transform hover:scale-105 transition duration-200"
+            >
+              Update Task
+            </button>
+          </form>
+          <div className="modal-action">
+            <form method="dialog">
+              <button className="btn">Close</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
     </div>
   );
 };

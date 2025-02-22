@@ -9,6 +9,7 @@ import AddTask from "./Pages/AddTask";
 import ManageTasks from "./Pages/ManageTasks";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import TaskBoard from "./Pages/TaskBoard";
+import PrivateRoute from "./PrivateRoute";
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
@@ -17,16 +18,24 @@ const router = createBrowserRouter([
     element: <Home></Home>,
     children: [
       {
-        path: '/',
-        element: <TaskBoard></TaskBoard>
+        path: "/",
+        element: <TaskBoard></TaskBoard>,
       },
       {
         path: "/add-task",
-        element: <AddTask></AddTask>,
+        element: (
+          <PrivateRoute>
+            <AddTask></AddTask>
+          </PrivateRoute>
+        ),
       },
       {
         path: "/manage-tasks",
-        element: <ManageTasks></ManageTasks>,
+        element: (
+          <PrivateRoute>
+            <ManageTasks></ManageTasks>,
+          </PrivateRoute>
+        ),
       },
     ],
   },

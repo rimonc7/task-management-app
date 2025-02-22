@@ -62,13 +62,13 @@ const Nav = () => {
             />
           ) : (
             <FaUserCircle
-              className="text-3xl text-gray-700"
+              className="text-4xl text-gray-700"
               title="Guest User"
             />
           )}
           <button
             onClick={() => setDarkTheme(!darkTheme)}
-            className={`flex items-center justify-center p-2 rounded-full border-2 border-gray-300 transition-all duration-300 ${
+            className={`flex items-center justify-center p-1 rounded-full border-2 border-gray-300 transition-all duration-300 ${
               darkTheme ? "bg-yellow-500 text-black " : "bg-gray-800 text-white"
             } hover:bg-gray-600`}
           >

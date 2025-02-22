@@ -3,10 +3,12 @@ import useAxiosPublic from "../Hook/useAxiosPublic";
 import { useContext } from "react";
 import { AuthContext } from "../Provider/AuthProvider";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const AddTask = () => {
   const { user } = useContext(AuthContext);
   const axiosPublic = useAxiosPublic();
+  const navigate= useNavigate('/')
 
   const { register, handleSubmit, reset } = useForm();
   const handleAddTask = async (data) => {
@@ -26,6 +28,7 @@ const AddTask = () => {
           draggable: true,
         });
       }
+      navigate('/')
     });
   };
 
